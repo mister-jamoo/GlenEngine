@@ -1,0 +1,6 @@
+[submodule "GlenEditor/private/include/ThirdParty/imgui"]
+	path = GlenEditor/private/include/ThirdParty/imgui
+	url = git@github.com:ocornut/imgui.git
+[submodule "GlenEditor/private/include/ThirdParty/glfw"]
+	path = GlenEditor/private/include/ThirdParty/glfw
+	url = git@github.com:glfw/glfw.git

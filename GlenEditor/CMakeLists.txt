@@ -1,0 +1,80 @@
+set(MODULE_NAME GlenEditor)
+
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+find_package(OpenGL REQUIRED)
+
+# Add GLFW
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/private/include/ThirdParty/glfw GLFW_BUILD)
+
+# Add IMGUI
+set(IMGUI_DIR ${CMAKE_CURRENT_SOURCE_DIR}/private/include/ThirdParty/imgui)
+set(IMGUI_SOURCES
+    ${IMGUI_DIR}/imgui.cpp
+    ${IMGUI_DIR}/imgui_demo.cpp
+    ${IMGUI_DIR}/imgui_draw.cpp
+    ${IMGUI_DIR}/imgui_tables.cpp
+    ${IMGUI_DIR}/imgui_widgets.cpp
+    # Add any ImGui backend files you need, e.g.:
+    ${IMGUI_DIR}/backends/imgui_impl_glfw.cpp
+    ${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp
+)
+
+add_library(ImGui STATIC ${IMGUI_SOURCES})
+
+target_link_libraries(ImGui
+	PUBLIC
+		glfw
+)
+
+target_include_directories(ImGui 
+	PUBLIC 
+		${IMGUI_DIR}
+		${IMGUI_DIR}/backends
+	PRIVATE
+		${CMAKE_CURRENT_SOURCE_DIR}/private/include/ThirdParty/glfw/include
+)
+
+# GLENEDTIOR
+
+file(GLOB_RECURSE SOURCES 
+		"${CMAKE_CURRENT_SOURCE_DIR}/private/src/*.cpp"
+)
+
+file(GLOB_RECURSE HEADERS 
+    "${CMAKE_CURRENT_SOURCE_DIR}/public/${MODULE_NAME}/*.h"
+)
+
+add_library(${MODULE_NAME} SHARED ${SOURCES} ${HEADERS})
+target_include_directories(${MODULE_NAME}
+    PUBLIC 
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/public>
+        $<INSTALL_INTERFACE:include>
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/private/include
+		${IMGUI_DIR}
+		${IMGUI_DIR}/backends
+		${CMAKE_CURRENT_SOURCE_DIR}/private/include/ThirdParty/glfw/include
+)
+
+# Add any third-party libraries
+target_link_libraries(${MODULE_NAME}
+    PRIVATE
+		GlenEngine
+		glfw
+		ImGui
+		${OPENGL_LIBRARIES}
+    PUBLIC
+        # Add any public dependencies
+)
+
+if(BUILD_SHARED_LIBS)
+    target_compile_definitions(${MODULE_NAME} 
+        PRIVATE GLENENGINE_EXPORTS
+        INTERFACE GLENENGINE_IMPORTS
+    )
+endif()
