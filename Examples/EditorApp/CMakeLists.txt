@@ -19,3 +19,11 @@ target_include_directories(EditorApp
 	${CMAKE_SOURCE_DIR}/GlenEditor/public
 )
 
+# For easier debugging, copy DLLs to executable directory (Windows)
+if(WIN32)
+	add_custom_command(TARGET EditorApp POST_BUILD
+			COMMAND ${CMAKE_COMMAND} -E copy_if_different
+			$<TARGET_FILE:GlenEditor> $<TARGET_FILE_DIR:EditorApp>
+	)
+endif()
+

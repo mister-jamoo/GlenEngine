@@ -4,11 +4,7 @@ file(GLOB_RECURSE SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/private/src/*.cpp"
 )
 
-file(GLOB_RECURSE HEADERS 
-    "${CMAKE_CURRENT_SOURCE_DIR}/public/${MODULE_NAME}/*.h"
-)
-
-add_library(${MODULE_NAME} ${SOURCES} ${HEADERS})
+add_library(${MODULE_NAME} SHARED ${SOURCES})
 
 target_include_directories(${MODULE_NAME}
     PUBLIC 
@@ -26,9 +22,7 @@ target_link_libraries(${MODULE_NAME}
         # Add any public dependencies
 )
 
-if(BUILD_SHARED_LIBS)
-    target_compile_definitions(${MODULE_NAME} 
-        PRIVATE GLENENGINE_EXPORTS
-        INTERFACE GLENENGINE_IMPORTS
-    )
-endif()
+
+target_compile_options(${MODULE_NAME} PRIVATE
+        $<$<CONFIG:Debug>:-DDEBUG -D_DEBUG>
+)

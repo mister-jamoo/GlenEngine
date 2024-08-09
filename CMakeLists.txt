@@ -4,8 +4,18 @@ project(Glen-Engine VERSION 1.0)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-option(BUILD_SHARED_LIBS "Build shared libraries" ON)
+include(cmake/Debug.cmake) 
 
-add_subdirectory(GlenEditor)
-add_subdirectory(GlenEngine)
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug)
+endif()
+
+add_compile_options(-g)
+
+enable_testing()
+
+option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
+
+add_subdirectory(GlenEditor GLEN_EDITOR_BUILD)
+add_subdirectory(GlenEngine GLEN_ENGINE_BUILD)
 add_subdirectory(Examples)
