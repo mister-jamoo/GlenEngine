@@ -2,8 +2,7 @@ set(MODULE_NAME GlenEditor)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-find_package(OpenGL REQUIRED)
-
+find_package(Vulkan REQUIRED)
 # Add GLFW
 set(GLFW_BUILD_DOCS ON CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
@@ -20,9 +19,8 @@ set(IMGUI_SOURCES
     ${IMGUI_DIR}/imgui_draw.cpp
     ${IMGUI_DIR}/imgui_tables.cpp
     ${IMGUI_DIR}/imgui_widgets.cpp
-    # Add any ImGui backend files you need, e.g.:
-    ${IMGUI_DIR}/backends/imgui_impl_glfw.cpp
-    ${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp
+    ${IMGUI_DIR}/backends/imgui_impl_glfw.cpp 
+		${IMGUI_DIR}/backends/imgui_impl_vulkan.cpp
 )
 
 add_library(ImGui STATIC ${IMGUI_SOURCES})
@@ -47,6 +45,7 @@ file(GLOB_RECURSE SOURCES
 )
 
 add_library(${MODULE_NAME} SHARED ${SOURCES})
+
 target_include_directories(${MODULE_NAME}
     PUBLIC 
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/public>
@@ -66,9 +65,10 @@ target_link_libraries(${MODULE_NAME}
 		GlenEngine
 		glfw
 		ImGui
-		${OPENGL_LIBRARIES}
+		Vulkan::Vulkan
 )
 
 target_compile_options(${MODULE_NAME} PRIVATE
 		$<$<CONFIG:Debug>:-DDEBUG -D_DEBUG>
 )
+

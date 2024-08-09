@@ -4,7 +4,6 @@
 OPEN_GLEN_NAMESPACE
 
 Engine::Engine() {
-	std::cout << "Hello from Engine" << std::endl;
 }
 
 Engine::~Engine() {

@@ -2,21 +2,23 @@
 #include "GlenEngine/Engine/Engine.h"
 #include "GlenEngine/GlenEngineAPI.h"
 
-
 OPEN_GLEN_NAMESPACE
 
-class Editor {
+    // Forward Declaration.
+    class WindowManager;
 
-public:
-  Editor(glen::Engine&);
-  ~Editor();
+    class Editor
+    {
+    public:
+        Editor(glen::Engine&);
+        ~Editor();
 
-  void Initialize();
-  void Run();
+        void initialize();
+        void run();
 
-private:
-	glen::Engine& m_engine; 
-  // Private members
-};
+    private:
+        glen::Engine& m_engine;
+        glen::WindowManager* m_windowManager;
+    };
 
 CLOSE_GLEN_NAMESPACE
