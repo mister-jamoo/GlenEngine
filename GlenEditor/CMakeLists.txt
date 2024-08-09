@@ -28,7 +28,7 @@ set(IMGUI_SOURCES
 add_library(ImGui STATIC ${IMGUI_SOURCES})
 
 target_link_libraries(ImGui
-	PUBLIC
+	PRIVATE
 		glfw
 )
 
@@ -60,13 +60,13 @@ target_include_directories(${MODULE_NAME}
 
 # Add any third-party libraries
 target_link_libraries(${MODULE_NAME}
+    PUBLIC
+        # Add any public dependencies
     PRIVATE
 		GlenEngine
 		glfw
 		ImGui
 		${OPENGL_LIBRARIES}
-    PUBLIC
-        # Add any public dependencies
 )
 
 target_compile_options(${MODULE_NAME} PRIVATE

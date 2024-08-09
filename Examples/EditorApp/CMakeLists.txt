@@ -9,8 +9,6 @@ target_link_libraries(EditorApp
 	PRIVATE
 		GlenEngine
 		GlenEditor
-		ImGui	
-		glfw
 )
 
 target_include_directories(EditorApp

@@ -1,15 +1,14 @@
 #include "GlenEditor/Editor/Editor.h"
+#include <imgui.h>
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+#include "GLFW/glfw3.h"
+#include <iostream>
 
 OPEN_GLEN_NAMESPACE
     Editor::Editor(glen::Engine& engine) : m_engine(engine)
     {
-#ifdef NDEBUG
-  std::cout << "Release build" << std::endl;
-#else
-        std::cout << "Debug build" << std::endl;
-#endif
     }
-
 
     Editor::~Editor()
     {

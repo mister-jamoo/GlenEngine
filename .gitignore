@@ -44,8 +44,7 @@ CMakeUserPresets.json
 *.out
 *.app
 
-.build-debug
-.build-release
+.build
 .cache/*
 .idea
 *.ini
