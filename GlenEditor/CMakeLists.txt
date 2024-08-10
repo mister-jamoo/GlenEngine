@@ -2,7 +2,6 @@ set(MODULE_NAME GlenEditor)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-find_package(Vulkan REQUIRED)
 # Add GLFW
 set(GLFW_BUILD_DOCS ON CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
@@ -20,22 +19,23 @@ set(IMGUI_SOURCES
     ${IMGUI_DIR}/imgui_tables.cpp
     ${IMGUI_DIR}/imgui_widgets.cpp
     ${IMGUI_DIR}/backends/imgui_impl_glfw.cpp 
-		${IMGUI_DIR}/backends/imgui_impl_vulkan.cpp
+	${IMGUI_DIR}/backends/imgui_impl_vulkan.cpp
 )
 
 add_library(ImGui STATIC ${IMGUI_SOURCES})
 
-target_link_libraries(ImGui
-	PRIVATE
-		glfw
-)
-
-target_include_directories(ImGui 
-	PUBLIC 
+target_include_directories(ImGui
+		PUBLIC
 		${IMGUI_DIR}
 		${IMGUI_DIR}/backends
-	PRIVATE
+		PRIVATE
 		${CMAKE_CURRENT_SOURCE_DIR}/private/include/ThirdParty/glfw/include
+)
+
+target_link_libraries(ImGui
+	PRIVATE
+		Vulkan::Vulkan
+		glfw
 )
 
 # GLENEDTIOR
@@ -52,23 +52,24 @@ target_include_directories(${MODULE_NAME}
         $<INSTALL_INTERFACE:include>
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/private/include
-		${IMGUI_DIR}
-		${IMGUI_DIR}/backends
-		${CMAKE_CURRENT_SOURCE_DIR}/private/include/ThirdParty/glfw/include
-)
 
+)
 # Add any third-party libraries
 target_link_libraries(${MODULE_NAME}
     PUBLIC
         # Add any public dependencies
     PRIVATE
 		GlenEngine
-		glfw
 		ImGui
 		Vulkan::Vulkan
+		glfw
 )
+
 
 target_compile_options(${MODULE_NAME} PRIVATE
 		$<$<CONFIG:Debug>:-DDEBUG -D_DEBUG>
 )
 
+if(APPLE)
+    target_compile_definitions(${MODULE_NAME} PRIVATE VK_USE_PLATFORM_MACOS_MVK)
+endif()

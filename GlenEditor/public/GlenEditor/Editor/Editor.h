@@ -1,6 +1,7 @@
 #pragma once
 #include "GlenEngine/Engine/Engine.h"
 #include "GlenEngine/GlenEngineAPI.h"
+#include <memory>
 
 OPEN_GLEN_NAMESPACE
 
@@ -10,15 +11,15 @@ OPEN_GLEN_NAMESPACE
     class Editor
     {
     public:
-        Editor(glen::Engine&);
+        Editor(Engine&);
         ~Editor();
 
         void initialize();
         void run();
 
     private:
-        glen::Engine& m_engine;
-        glen::WindowManager* m_windowManager;
+        Engine& m_engine;
+        std::unique_ptr<WindowManager> m_windowManager;
     };
 
 CLOSE_GLEN_NAMESPACE

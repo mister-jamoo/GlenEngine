@@ -1,15 +1,11 @@
+#include <format>
+
 #include "GlenEditor/WindowManager/WindowManager.h"
 
-#include <iostream>
-
 OPEN_GLEN_NAMESPACE
-    WindowManager::WindowManager()
-    {
-    }
 
-    void WindowManager::initialize()
-    {
-        std::cout << "Window Manager Initialized" << std::endl;
-    }
+void WindowManager::initilize() {
+}
+
 
 CLOSE_GLEN_NAMESPACE
