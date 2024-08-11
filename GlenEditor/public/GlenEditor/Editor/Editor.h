@@ -10,15 +10,15 @@ OPEN_GLEN_NAMESPACE
     class Editor
     {
     public:
-        Editor(glen::Engine&);
+        Editor(Engine&);
         ~Editor();
 
         void initialize();
         void run();
 
     private:
-        glen::Engine& m_engine;
-        glen::WindowManager* m_windowManager;
+        Engine& m_engine;
+        WindowManager* m_windowManager;
     };
 
 CLOSE_GLEN_NAMESPACE

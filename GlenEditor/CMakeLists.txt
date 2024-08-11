@@ -3,6 +3,7 @@ set(MODULE_NAME GlenEditor)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 find_package(Vulkan REQUIRED)
+
 # Add GLFW
 set(GLFW_BUILD_DOCS ON CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
@@ -34,9 +35,13 @@ target_include_directories(ImGui
 	PUBLIC 
 		${IMGUI_DIR}
 		${IMGUI_DIR}/backends
-	PRIVATE
+	PRIVAT;E
 		${CMAKE_CURRENT_SOURCE_DIR}/private/include/ThirdParty/glfw/include
 )
+
+# GLM
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/private/include/ThirdParty/glm)
+
 
 # GLENEDTIOR
 
@@ -44,7 +49,8 @@ file(GLOB_RECURSE SOURCES
 		"${CMAKE_CURRENT_SOURCE_DIR}/private/src/*.cpp"
 )
 
-add_library(${MODULE_NAME} SHARED ${SOURCES})
+add_library(${MODULE_NAME} SHARED ${SOURCES}
+)
 
 target_include_directories(${MODULE_NAME}
     PUBLIC 
@@ -55,6 +61,7 @@ target_include_directories(${MODULE_NAME}
 		${IMGUI_DIR}
 		${IMGUI_DIR}/backends
 		${CMAKE_CURRENT_SOURCE_DIR}/private/include/ThirdParty/glfw/include
+		${GLM_INCLUDE_DIRS}
 )
 
 # Add any third-party libraries
@@ -66,6 +73,7 @@ target_link_libraries(${MODULE_NAME}
 		glfw
 		ImGui
 		Vulkan::Vulkan
+		glm::glm
 )
 
 target_compile_options(${MODULE_NAME} PRIVATE

@@ -3,7 +3,7 @@
 
 
 OPEN_GLEN_NAMESPACE
-    Editor::Editor(glen::Engine& engine) : m_engine(engine)
+    Editor::Editor(Engine& engine) : m_engine(engine)
     {
         m_windowManager = new WindowManager();
     }
