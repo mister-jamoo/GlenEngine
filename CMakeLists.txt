@@ -26,6 +26,16 @@ add_compile_options(-g)
 
 enable_testing()
 
+# Vulkan setup
+if(APPLE)
+    find_package(Vulkan REQUIRED)
+    if(NOT Vulkan_FOUND)
+        message(FATAL_ERROR "Vulkan not found. Please install MoltenVK.")
+    endif()
+else()
+    find_package(Vulkan REQUIRED)
+endif()
+
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 
 add_subdirectory(GlenEditor)

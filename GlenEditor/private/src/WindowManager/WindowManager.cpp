@@ -2,6 +2,7 @@
 #include <iostream>
 
 OPEN_GLEN_NAMESPACE
+
     WindowManager::WindowManager()
     {
     }

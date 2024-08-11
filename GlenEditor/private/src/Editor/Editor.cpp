@@ -5,7 +5,6 @@
 OPEN_GLEN_NAMESPACE
     Editor::Editor(Engine& engine) : m_engine(engine)
     {
-        m_windowManager = new WindowManager();
     }
 
     Editor::~Editor()
@@ -14,7 +13,7 @@ OPEN_GLEN_NAMESPACE
 
     void Editor::initialize()
     {
-       m_windowManager->initialize(); 
+        m_windowManager->initialize();
     }
 
     void Editor::run()

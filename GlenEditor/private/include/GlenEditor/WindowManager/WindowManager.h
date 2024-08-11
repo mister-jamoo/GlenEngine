@@ -25,7 +25,6 @@ OPEN_GLEN_NAMESPACE
         void initVulkan();
         void mainLoop();
         void cleanup();
-
     public:
 
     private:
