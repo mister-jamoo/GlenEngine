@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.28.6)
 project(Glen-Engine VERSION 1.0)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -17,28 +17,23 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/Rel
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE)
 
 include(cmake/Debug.cmake) 
+include(FetchContent)
 
+# Add spdlog
+include(cmake/SpdLog.cmake)
+# Find Vulkan SDK.
+find_package(Vulkan REQUIRED)
+
+# Automatically set the build type to Debug if not specified.
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
 add_compile_options(-g)
-
 enable_testing()
-
-# Vulkan setup
-if(APPLE)
-    find_package(Vulkan REQUIRED)
-    if(NOT Vulkan_FOUND)
-        message(FATAL_ERROR "Vulkan not found. Please install MoltenVK.")
-    endif()
-else()
-    find_package(Vulkan REQUIRED)
-endif()
 
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 
 add_subdirectory(GlenEditor)
 add_subdirectory(GlenEngine)
-add_subdirectory(Examples)
-
+add_subdirectory(Examples) 

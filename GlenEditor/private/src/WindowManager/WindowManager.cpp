@@ -19,10 +19,21 @@ OPEN_GLEN_NAMESPACE
 
     void WindowManager::initWindow()
     {
+        // Initialize GLFW window.
+        spdlog::info("Initializing GLFW window");
+#if DEBUG && defined(__APPLE__)
+        spdlog::info("MacOS detected");
+#endif
+#if DEBUG && defined(_WIN32) || defined(_WIN64)
+        spdlog::info("Windows detected");
+#endif
+#if DEBUG && defined(__linux__)
+        spdlog::info("Linux detected");
+#endif
         // Set up error callback
         glfwSetErrorCallback([](int error, const char* description)
         {
-            std::cerr << "GLFW Error " << error << ": " << description << std::endl;
+            spdlog::error("GLFW Error {}: {}", error, description);
         });
 
         if (!glfwInit())
@@ -61,7 +72,22 @@ OPEN_GLEN_NAMESPACE
         const char** glfwExtensions;
 
         glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
-
+        
+        // Add all the glfw extensions to the required extensions list.
+        std::vector<const char*> requiredExtensions;
+        for(uint32_t i = 0; i < glfwExtensionCount; i++) {
+            requiredExtensions.emplace_back(glfwExtensions[i]);
+        }
+        
+#if defined(__APPLE__) || defined(__MACH__)
+        // Add the VK_KHR_portability_subset extension.
+        requiredExtensions.emplace_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
+        // Set the flags for the instance creation. Using Bitwise OR to add the VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR flag.
+        createInfo.flags |= VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR;
+#endif
+        // Set the count of enabled extensions and the extension names.
+        createInfo.enabledExtensionCount = (uint32_t) requiredExtensions.size();
+        createInfo.ppEnabledExtensionNames = requiredExtensions.data();
 
 #ifdef DEBUG
         // Lets find out all the supported extensions.
@@ -71,23 +97,22 @@ OPEN_GLEN_NAMESPACE
         std::vector<VkExtensionProperties> extensions(extensionCount);
         vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensions.data());
 
-        std::cout << "Available Vulkan extensions:\n";
+        std::string allExtensionsList;
         for (const auto& extension : extensions)
-        {
-            std::cout << '\t' << extension.extensionName << '\n';
+        {    
+            allExtensionsList += "\n\t" + std::string(extension.extensionName);
         }
         
-        std::cout << "Required Vulkan extensions for GLFW:" << std::endl;
-        for (int i = 0; i < glfwExtensionCount; i++)
+        spdlog::info("Available Vulkan Extensions: {}", allExtensionsList);
+        
+        std::string requiredExtensionsList; 
+        for (int i = 0; i < requiredExtensions.size(); i++)
         {
-            std::cout << '\t' << "Required GLFW Vulkan extension: " << glfwExtensions[i] << std::endl;
+            requiredExtensionsList += "\n\t" + std::string(requiredExtensions[i]);
         }
+        spdlog::info("Required Vulkan Extensions: {}", requiredExtensionsList);
+        
 #endif
-
-        createInfo.enabledExtensionCount = glfwExtensionCount; // Set the count of enabled extensions for OS.
-        createInfo.ppEnabledExtensionNames = glfwExtensions; // Set the extension names.
-        createInfo.enabledLayerCount = 0; // Global validation layers enabled.
-
         if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS)
         {
             throw std::runtime_error("failed to create instance!");

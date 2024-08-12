@@ -2,8 +2,6 @@ set(MODULE_NAME GlenEditor)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-find_package(Vulkan REQUIRED)
-
 # Add GLFW
 set(GLFW_BUILD_DOCS ON CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
@@ -49,7 +47,6 @@ target_link_libraries(ImGui
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/private/include/ThirdParty/glm)
 
 # GLENEDTIOR
-
 file(GLOB_RECURSE SOURCES 
 		"${CMAKE_CURRENT_SOURCE_DIR}/private/src/*.cpp"
 )
@@ -78,6 +75,7 @@ target_link_libraries(${MODULE_NAME}
 		ImGui
 		Vulkan::Vulkan
 		glm::glm
+		spdlog::spdlog
 )
 
 target_compile_options(${MODULE_NAME} PRIVATE
