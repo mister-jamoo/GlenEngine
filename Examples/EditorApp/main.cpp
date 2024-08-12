@@ -1,8 +1,8 @@
 #include <exception>
 #include <iostream>
 
-#include "GlenEditor/Editor/Editor.h"
-#include "GlenEngine/Engine/Engine.h"
+#include <GlenEditor/Editor/Editor.h>
+#include <GlenEngine/Engine/Engine.h>
 
 int main(){
 

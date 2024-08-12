@@ -2,12 +2,13 @@
 #include <GlenEngine/GlenEngineAPI.h>
 #include <vulkan/vulkan_core.h>
 #include <GLFW/glfw3.h>
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
+#include <iostream>
 
 OPEN_GLEN_NAMESPACE
 
-    constexpr uint32_t WIDTH = 800;
-    constexpr uint32_t HEIGHT = 600;
+    const uint32_t WIDTH = 800;
+    const uint32_t HEIGHT = 600;
 
     class WindowManager
     {
@@ -16,19 +17,19 @@ OPEN_GLEN_NAMESPACE
         ~WindowManager();
 
         void initialize();
+        
 
     private:
-        //GLFW
         void initWindow();
-
-        // Vulkan
         void initVulkan();
+        void createInstance();
         void mainLoop();
         void cleanup();
-    public:
+
 
     private:
-        GLFWwindow* window;
+        GLFWwindow* window = nullptr;
+        VkInstance instance;
     };;
 
 CLOSE_GLEN_NAMESPACE
