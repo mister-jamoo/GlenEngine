@@ -2,14 +2,21 @@
 #include <GlenEngine/GlenEngineAPI.h>
 #include <vulkan/vulkan_core.h>
 #include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <iostream>
 #include <spdlog/spdlog.h>
 
 OPEN_GLEN_NAMESPACE
-
     const uint32_t WIDTH = 800;
     const uint32_t HEIGHT = 600;
+
+    const std::vector<const char*> validationLayers = {
+        "VK_LAYER_KHRONOS_validation"
+    };
+
+#ifdef NDEBUG
+    const bool enableValidationLayers = false;
+#else
+    const bool enableValidationLayers = true;
+#endif
 
     class WindowManager
     {
@@ -18,15 +25,19 @@ OPEN_GLEN_NAMESPACE
         ~WindowManager();
 
         void initialize();
-        
 
     private:
         void initWindow();
         void initVulkan();
-        void createInstance();
         void mainLoop();
         void cleanup();
 
+        // Vulkan methods:
+        void createInstance();
+        VkApplicationInfo createVulkanAppInfo();
+        void logRequiredExtensions(std::vector<const char*> requiredExtensions);
+        void logAvailableExtensions();
+        bool checkValidationSupport();
 
     private:
         GLFWwindow* window = nullptr;
