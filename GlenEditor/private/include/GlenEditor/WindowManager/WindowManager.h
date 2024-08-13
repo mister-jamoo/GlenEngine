@@ -8,15 +8,6 @@ OPEN_GLEN_NAMESPACE
     const uint32_t WIDTH = 800;
     const uint32_t HEIGHT = 600;
 
-    const std::vector<const char*> validationLayers = {
-        "VK_LAYER_KHRONOS_validation"
-    };
-
-#ifdef NDEBUG
-    const bool enableValidationLayers = false;
-#else
-    const bool enableValidationLayers = true;
-#endif
 
     class WindowManager
     {
@@ -38,10 +29,19 @@ OPEN_GLEN_NAMESPACE
         void logRequiredExtensions(std::vector<const char*> requiredExtensions);
         void logAvailableExtensions();
         bool checkValidationSupport();
+        bool checkValidationLayerSupport();
 
     private:
         GLFWwindow* window = nullptr;
         VkInstance instance;
-    };;
+
+        const std::vector<const char*> validationLayers = {"VK_LAYER_KHRONOS_validation"};
+
+#ifdef NDEBUG
+        const bool enableValidationLayers = false;
+#else
+        const bool enableValidationLayers = true;
+#endif
+    };
 
 CLOSE_GLEN_NAMESPACE
