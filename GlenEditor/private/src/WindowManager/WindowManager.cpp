@@ -55,9 +55,9 @@ OPEN_GLEN_NAMESPACE
     {
         VkApplicationInfo appInfo{}; // Create application information struct.
         appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO; // Set the struct type.
-        appInfo.pApplicationName = "Hello Triangle"; // Set the application name.
+        appInfo.pApplicationName = "GlenEditor"; // Set the application name.
         appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0); // Set the application version.
-        appInfo.pEngineName = "No Engine"; // Set the Engine name.
+        appInfo.pEngineName = "GlenEngine"; // Set the Engine name.
         appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0); // Set the engine version.
         appInfo.apiVersion = VK_API_VERSION_1_0; // Set the api version.
 
